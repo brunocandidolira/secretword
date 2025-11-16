@@ -31,7 +31,7 @@ const pickedWordandCategory=()=>{
   //pick a radom category
 const categories= Object.keys(word);
 const category=
-categories[Math.floor(Math.random()*Object.keys(word))];
+categories[Math.floor(Math.random()*Object.keys(word).length)];
 //pick a radom word
   const words= word [category][Math.floor(Math.random()*word[category].length)];
   return {words,category}
