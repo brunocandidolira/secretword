@@ -13,7 +13,7 @@ function Game({verifyLetter}) {
        </h3>
        <div className="wordContainer">
         <span className="letter"> A</span>
-        <span className="blackSquare"></span>
+        <span className="blanckSquare"></span>
        </div>
        <div className="letterContainer">
        <p>Tente Advinhar uma letra da palavra:</p>
