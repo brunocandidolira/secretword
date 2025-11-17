@@ -2,7 +2,7 @@
 import './App.css';
 
 //react
-import { useCallback,useEffect,useActionState,useState } from 'react';
+import { useCallback,useEffect,useState } from 'react';
 
 //data
 import{wordsList} from './Data/word';
@@ -33,7 +33,7 @@ const [guesses,setGuesses]=useState(guessesQty);
 const [score,setScore]=useState(0);
 
 
-const pickedWordandCategory=()=>{
+const pickedWordandCategory=useCallback(()=>{
   //pick a radom category
 const categories= Object.keys(words);
 const category=
@@ -44,10 +44,12 @@ console.log(category);
   const word= words[category][Math.floor(Math.random()*words[category].length)];
   return {word,category}
 
-};
+},[words]);
 
 // fuction start the secret word
-const StartGame=()=>{
+const StartGame=useCallback(()=>{
+
+  clearLetterStates();
 
 //pick word and pick category
  const {word,category} =pickedWordandCategory();
@@ -65,7 +67,7 @@ console.log(wordLetters);
 
   setGameStage(stages[1].name);
 
-}
+},[pickedWordandCategory])
 
 //process  the letter input
 const verifyLetter = (letter)=>{
@@ -100,6 +102,20 @@ useEffect(() => {
   }
 }, [guesses]);  // <-- fecha só o useEffect
 
+useEffect(()=>{
+
+const uniqueLetters=[...new Set(letters)]
+
+//win condition
+if(guessedLetters.length===uniqueLetters.length){
+  //add score 
+  setScore((actualScore)=>actualScore+=100)
+  //restart game
+StartGame();
+}
+},[guessedLetters,letters,StartGame])
+
+
 //restarts the game
 const retry=()=>{
   setScore(0)
@@ -119,7 +135,7 @@ const retry=()=>{
    guesses={guesses}
    score={score}
    />}
-   {gameStage === 'End'&& <GameOver retry={retry}/>}
+   {gameStage === 'End'&& <GameOver retry={retry} score={score}/>}
 
       
     </div>
